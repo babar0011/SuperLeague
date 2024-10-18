@@ -1,0 +1,50 @@
+﻿@model Team
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container my-5">
+    <div class="row p-4 align-items-center pe-lg-0 pt-lg-5 pb-lg-5 rounded-3 border shadow-lg">
+        <div class="col-lg-4 pl-5 text-center">
+            <img src="@Model.FlagUrl" style="width:350px;" />
+            <h1 class="display-4 fw-bold lh-1">@Model.Name</h1>
+            <p class="lead">Team Info</p>
+            <a asp-controller="Teams" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary px-4"><i class="bi bi-pencil-square"></i> Edit Detail</a>
+            <a asp-controller="Teams" asp-action="Index" class="btn btn-secondary px-4"><i class="bi bi-arrow-bar-left"></i> Go Back</a>
+            <a asp-controller="Teams" asp-action="Match" class="btn btn-outline-primary px-4 mt-4"><i class="bi bi-play"></i> Go to Match</a>
+        </div>
+        <div class="col-lg-7 p-3 border-start p-lg-1 pt-lg-3">
+            <h3>Players in this team:</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Player Name</th>
+                        <th>Skill</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in Model.Players)
+                    {
+                        <tr>
+                            <td class="text-center align-middle">
+                                <img src="@player.ImageUrl" style="width:50px;" />
+                                <img src="@Model.KitUrl" style="width:50px; margin-left:-55px; margin-top:42px;" />
+                            </td>
+                            <td class="align-middle">
+                                <a asp-controller="Players" asp-action="Detail" asp-route-id="@player.Id"
+                                   style="font-weight:500; text-decoration:none;">@player.Name</a>
+                            </td>
+                            <td class="text-capitalize align-middle">@player.Skill</td>
+                            <td class="align-middle">
+                                <img src="@player.Country.FlagUrl" style="width:40px;" alt="@player.Country.Name Flag" />
+                                @player.Country.Name
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <a asp-controller="Teams" asp-action="EditTeamPlayers" asp-route-id="@Model.Id" class="btn btn-info px-4"><i class="bi bi-pencil-square"></i> Edit Players</a>
+        </div>
+    </div>
+</div>

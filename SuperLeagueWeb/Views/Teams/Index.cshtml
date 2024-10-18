@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Team>
+@{
+    ViewData["Title"] = "Teams Index";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="font-size:1.5rem;">Super League Teams Table</h1>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Teams" asp-action="Match" class="btn btn-secondary"><i class="bi-play"></i>&nbsp; Start a Match</a>
+            <a asp-controller="Teams" asp-action="Create" class="btn btn-primary"><i class="bi-plus-circle"></i>&nbsp; Add New Team</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Team Name</th>
+                <th>Team Players</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td class="text-center align-middle"><img src="@obj.FlagUrl" style="width:75px;" /></td>
+                    <td class="align-middle">@obj.Name</td>
+                    <td class="align-middle">
+                        <a asp-controller="Teams" asp-action="Detail" asp-route-id="@obj.Id" class="btn btn-info"><i class="bi bi-eye-fill"></i> View Players</a>
+                    </td>
+                    <td class="align-middle">
+                        <a asp-controller="Teams" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a asp-controller="Teams" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

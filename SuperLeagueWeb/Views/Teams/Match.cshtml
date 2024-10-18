@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Team>
+@{
+    ViewData["Title"] = "Start a Match";
+}
+<div class="container my-5">
+    <div class="p-4 align-items-center pe-lg-0 pt-lg-5 pb-lg-5 rounded-3 border shadow-lg">
+        <div class="row">
+            <div class="col-lg-5 text-end border-end">
+                <h3>Super League Web</h3>
+            </div>
+            <div class="col-lg-6 border-start">
+                <h3>Select Your Team to Continue</h3>
+            </div>
+        </div>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row col-lg-12 p-3 p-lg-1 pt-lg-3">
+            <div class="row">
+                @foreach (var team in Model)
+                {
+                    <div class="container col-lg-5 m-5 border">
+                        <div class="row d-flex align-items-center">
+                            <img class="col-4 border-end" src="@team.FlagUrl" alt="@team.Name Flag" />
+                            <div class="col-8">
+                                <h4>@team.Name</h4>
+                                <a asp-controller="Teams" asp-action="EditTeamPlayers" asp-route-id="@team.Id" class="row btn btn-secondary">
+                                    <i class="bi bi-pencil-square"></i>&nbsp; Change Team Players
+                                </a>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <table class="table">
+                            <tr>
+                                @foreach (var player in team.Players)
+                                {
+                                    <th>
+                                        <a asp-controller="Players" asp-action="Detail" asp-route-id="@player.Id" class="text-decoration-none">
+                                            <img src="@player.ImageUrl" style="width:45px;" />
+                                            <img src="@team.KitUrl" style="width:45px; margin-left:0px; margin-top:-30px;" />
+                                        </a>
+                                    </th>
+                                }
+                            </tr>
+                        </table>
+                        <form method="post">
+                            <input name="id" value="@team.Id" hidden/>
+                            <div class="row d-flex align-items-center" style="margin-left:10px;">
+                                <button type="submit" class="btn btn-info row">
+                                    <i class="bi bi-check-circle"></i>&nbsp; Select
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

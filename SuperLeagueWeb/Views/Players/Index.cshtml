@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Player>
+@{
+    ViewData["Title"] = "Players Index";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6">
+            <h1 style="font-size:1.5rem;">Super League Players Table</h1>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Players" asp-action="Create" class="btn btn-primary"><i class="bi-plus-circle"></i>&nbsp; Add New Player</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Player Name</th>
+                <th>Skill</th>
+                <th>Category</th>
+                <th>Country</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td class="text-center align-middle">
+                        <img src="@obj.ImageUrl" style="width:50px;" />
+                        <img src="@obj.Country.KitUrl" style="width:50px; margin-left:-55px; margin-top:42px;" />
+                    </td>
+                    <td class="align-middle">
+                        <a asp-controller="Players" asp-action="Detail" asp-route-id="@obj.Id"
+                        style="font-weight:500; text-decoration:none;">@obj.Name</a>
+                    </td>
+                    <td class="text-capitalize align-middle">@obj.Skill</td>
+                    <td class="align-middle">@obj.Category.Name</td>
+                    <td class="align-middle">
+                        <img src="@obj.Country.FlagUrl" style="width:40px;" alt="@obj.Country.Name Flag" />
+                        @obj.Country.Name
+                    </td>
+                    <td class="align-middle">
+                        <a asp-controller="Players" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
+                        <a asp-controller="Players" asp-action="Delete" asp-route-id="@obj.Id" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

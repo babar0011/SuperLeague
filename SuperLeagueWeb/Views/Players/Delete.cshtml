@@ -1,0 +1,58 @@
+﻿@model Player
+@{
+    ViewData["Title"] = "Delete Player";
+}
+
+<form method="post" asp-action="DeletePost">
+    <input asp-for="Id" hidden>
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h3 class="text-primary">Delete Player</h3>
+            <hr />
+        </div>
+        <div class="row pb-2">
+            <div class="col-6 mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" disabled>
+            </div>
+            <div class="col-6 mb-3">
+                <label asp-for="CategoryId" class="form-label">Category</label>
+                <select asp-for="CategoryId" class="form-select form-select-md mb-3" aria-label=".form-select-lg example" disabled>
+                    <option selected>Select Category</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row pb-2">
+            <div class="col-6 mb-3">
+                <label asp-for="Skill" class="form-label"></label>
+                <select asp-for="Skill" class="form-select form-select-md mb-3" disabled>
+                    <option selected>Select Skill</option>
+                    <option value="batting">Batting</option>
+                    <option value="bowling">Bowling</option>
+                    <option value="wicket-keeping">Wicket Keeping</option>
+                    <option value="all-rounder">All Rounder</option>
+                </select>
+            </div>
+            <div class="col-6 mb-3">
+                <label asp-for="CountryId" class="form-label">Country</label>
+                <select asp-for="CountryId" class="form-select form-select-md mb-3" disabled>
+                    <option selected>Select Country</option>
+                    @foreach (var country in ViewBag.Countries)
+                    {
+                        <option value="@country.Id">@country.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class=" mb-3">
+            <label asp-for="ImageUrl" class="form-label"></label>
+            <input asp-for="ImageUrl" class="form-control" disabled>
+        </div>
+        <input type="submit" value="Delete" class="btn btn-primary">
+        <a asp-controller="Players" asp-action="Index" class="btn btn-secondary">Go Back</a>
+    </div>
+</form>

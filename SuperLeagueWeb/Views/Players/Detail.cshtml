@@ -1,0 +1,23 @@
+﻿@model Player
+@{
+    ViewData["Title"] = Model.Name;
+}
+<div class="container my-5">
+    <div class="row p-4 pb-0 align-items-center pe-lg-0 pt-lg-5 rounded-3 border shadow-lg">
+        <div class="col-lg-4 pl-5">
+            <img src="@Model.ImageUrl" style="width:350px;" />
+            <img src="@Model.Country.KitUrl" style="width:365px; margin-left:-363px; margin-top:300px;" />
+        </div>
+        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+            <p class="lead">Player Info</p>
+            <h1 class="display-4 fw-bold lh-1 mb-4">@Model.Name</h1>
+            <span class="lead mb-5">Player Skill: </span><b class="lead fw-bold text-uppercase">@Model.Skill</b><br>
+            <span class="lead mb-5">Player Category: </span><b class="lead fw-bold text-uppercase">@Model.Category.Name</b><br />
+            <span class="lead mb-5">Player Country: </span><img src="@Model.Country.FlagUrl" style="width:30px;" alt="@Model.Country.Name Flag" /><b class="lead fw-bold text-uppercase">@Model.Country.Name</b><br>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3 pt-3">
+                <a asp-controller="Players" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-lg px-4"><i class="bi bi-pencil-square"></i> Edit Detail</a>
+                <a asp-controller="Players" asp-action="Index" class="btn btn-secondary btn-lg px-4"><i class="bi bi-arrow-bar-left"></i> Go Back</a>
+            </div>
+        </div>
+    </div>
+</div>

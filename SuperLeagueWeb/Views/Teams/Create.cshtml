@@ -1,0 +1,39 @@
+﻿@model Team
+@{
+    ViewData["Title"] = "Add Team";
+}
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h3 class="text-primary">Add New Team</h3>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row pb-2">
+            <div class="col-6 mb-3">
+                <label asp-for="FlagUrl" class="form-label">Flag URL</label>
+                <input asp-for="FlagUrl" class="form-control">
+                <span asp-validation-for="FlagUrl" class="text-danger"></span>
+            </div>
+            <div class="col-6 mb-3">
+                <label asp-for="KitUrl" class="form-label">Kit URL</label>
+                <input asp-for="KitUrl" class="form-control">
+                <span asp-validation-for="KitUrl" class="text-danger"></span>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary">
+        <a asp-controller="Teams" asp-action="Index" class="btn btn-secondary">Go Back</a>
+        <div asp-validation-summary="All" class="mt-3"></div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
