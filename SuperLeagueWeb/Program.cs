@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SuperLeagueWeb.Hubs;
 using SuperLeagueWeb.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SuperContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
+builder.Services.AddCors(options => options.AddPolicy("AllowSpecificOrigin", 
+    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -23,6 +27,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors("AllowSpecificOrigin");
+
 app.UseRouting();
 
 app.UseAuthorization();
@@ -30,5 +36,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapHub<ScoreHub>("/hubs/scoreHub");
 
 app.Run();

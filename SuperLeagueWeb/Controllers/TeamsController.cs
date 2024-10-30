@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using SuperLeagueWeb.Hubs;
 using SuperLeagueWeb.Models;
 
 namespace SuperLeagueWeb.Controllers
@@ -199,6 +201,7 @@ namespace SuperLeagueWeb.Controllers
             var allPlayers = await _db.Players.OrderBy(p => p.Skill).Include(p => p.Category).Include(p => p.Country).ToListAsync();
             ViewBag.Team = teamFromDb;
             ViewBag.AllPlayers = allPlayers;
+            ViewBag.SelectedPlayers = selectedPlayers;
             return View(teamFromDb);
         }
 
@@ -336,7 +339,8 @@ namespace SuperLeagueWeb.Controllers
                             break;
                         }
                         balls.Add(currentTeamPlayers[currentPlayerIndex]);
-                    } else
+                    }
+                    else
                     {
                         finalScore += run;
                     }
@@ -355,6 +359,52 @@ namespace SuperLeagueWeb.Controllers
             ViewBag.OpponentTeam = opponentTeam;
             ViewBag.FinalScore = finalScore;
             ViewBag.OversData = oversData;
+
+            return View(teamFromDb);
+        }
+
+        //Get
+        public async Task<IActionResult> Challenge(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var teamFromDb = await _db.Teams.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (teamFromDb == null)
+            {
+                return NotFound();
+            }
+
+            var allOpponentTeams = await _db.Teams.Where(t => t.Id != id && t.Players.Count == 5).ToListAsync();
+
+            ViewBag.AllOpponentTeams = allOpponentTeams;
+
+            return View(teamFromDb);
+        }
+
+        //Post
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StartChallenge(int? id, int? tid, int? target)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var teamFromDb = await _db.Teams.FirstOrDefaultAsync(t => t.Id == id);
+
+            var opponentTeam = await _db.Teams.FirstOrDefaultAsync(t => t.Id == tid);
+
+            if (teamFromDb == null || opponentTeam == null)
+            {
+                return NotFound();
+            }
+            ViewBag.OpponentTeam = opponentTeam;
+            ViewBag.Target = target + 1;
 
             return View(teamFromDb);
         }

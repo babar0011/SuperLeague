@@ -43,9 +43,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @foreach (var player in ViewBag.AllPlayers)
                         {
                             var isChecked = Model.Players.Any(p => p.Id == player.Id);
+                            @if (ViewBag.SelectedPlayers != null)
+                            {
+                                isChecked = ViewBag.SelectedPlayers.Contains(player);
+                            }
                             <tr class="player-row @(isChecked ? "table-success" : "")" data-player-id="@player.Id">
                                 <td hidden>
                                     <input type="checkbox" class="player-checkbox" name="SelectedPlayerIds" value="@player.Id"

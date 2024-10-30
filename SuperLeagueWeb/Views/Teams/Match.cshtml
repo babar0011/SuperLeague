@@ -43,14 +43,14 @@
                                 }
                             </tr>
                         </table>
-                        <form method="post">
-                            <input name="id" value="@team.Id" hidden/>
-                            <div class="row d-flex align-items-center" style="margin-left:10px;">
-                                <button type="submit" class="btn btn-info row">
-                                    <i class="bi bi-check-circle"></i>&nbsp; Select
-                                </button>
-                            </div>
-                        </form>
+                        <div class="row d-flex align-items-center" style="margin-left:30px;">
+                            <a asp-controller="Teams" asp-action="Start" asp-route-id="@team.Id" class="btn btn-info row col-6">
+                                <i class="bi bi-check-circle"></i>&nbsp; Start
+                            </a>
+                            <a asp-controller="Teams" asp-action="Challenge" asp-route-id="@team.Id" type="submit" class="btn btn-danger row col-6">
+                                <i class="bi bi-slash-circle"></i>&nbsp; Challenge
+                            </a>
+                        </div>
                     </div>
                 }
             </div>

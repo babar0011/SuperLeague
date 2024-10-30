@@ -1,0 +1,135 @@
+﻿@model Team
+@{
+    ViewData["Title"] = "Challenge a Match";
+    var opponentTeam = ViewBag.OpponentTeam as Team;
+}
+<div class="container my-5">
+    <div class="p-4 align-items-center pe-lg-0 pt-lg-5 pb-lg-5 rounded-3 border shadow-lg">
+        <h3 class="text-center">Super League Web</h3>
+        <div class="row text-center">
+            <div class="col-lg-5 text-end" style="margin-top:-40px;">
+                <img src="@Model.FlagUrl" width="200" />
+                <h3 style="margin-top:-30px;">Team @Model.Name</h3>
+            </div>
+            <div class="col-2 justify-content-center border-start border-end d-flex align-items-center">
+                <h3>vs</h3>
+            </div>
+
+            <div class="col-lg-5 text-start" style="margin-top:-40px;">
+                <img src="@opponentTeam.FlagUrl" width="200" />
+                <h3 style="margin-top:-30px;">Team @opponentTeam.Name</h3>
+            </div>
+        </div>
+        <hr />
+        <div class="over-container p-3 my-3 border rounded sticky-top">
+            <div class="row justify-content-center">
+                <div class="ball-container p-2 m-1 border rounded bg-dark col-2">
+                    <p class="text-light">Batsman</p>
+                    <img src="" id="BatsmanImage" style="width:50px;" />
+                    <img src="@Model.KitUrl" style="width:50px; margin-left:0px; margin-top:-13px;" />
+                    <p class="text-light" id="BatsmanName"></p>
+                </div>
+                <div class="ball-container p-2 m-1 border rounded bg-dark col-6 align-self-center">
+                    <div style="font-size: 40px; display: flex; flex-direction: row !important; justify-content: center; align-items: end; color: white;">
+                        <span id="TotalRuns" style="margin-right: 4px;"></span> / <span id="TotalWickets" style="margin-left: 4px;"></span> <span style="font-size: 20px; margin-bottom:10px!important;">(<span id="TotalOvers"></span>)</span>
+                    </div>
+                    <div style="font-size: 20px; display: flex; flex-direction: row !important; justify-content: center; align-items: end; color: white;" @(ViewBag.Target == 999 ? "hidden" : "")>
+                        Target:&nbsp;<span id="TotalTarget" style="margin-right: 4px;"></span>
+                    </div>
+                    <div style="font-size: 18px; display: flex; flex-direction: row !important; justify-content: center; align-items: end; color: white;" @(ViewBag.Target == 999 ? "hidden" : "")>
+                        Need&nbsp;<span id="RemainingScore"></span>&nbsp;runs to win from&nbsp;<span id="RemainingBalls"></span>&nbsp;balls.
+                    </div>
+                    <div style="font-size: 18px; display: flex; flex-direction: row !important; justify-content: center; align-items: end; color: white;" @(ViewBag.Target != 999 ? "hidden" : "")>
+                        Innings 1
+                    </div>
+                </div>
+                <div class="ball-container p-2 m-1 border rounded opacity-100 col-2">
+                    <p>Bowler</p>
+                    <img src="" id="BowlerImage" style="width:50px;" />
+                    <img src="@opponentTeam.KitUrl" style="width:50px; margin-left:0px; margin-top:-13px;" />
+                    <p id="BowlerName"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="over-container p-3 my-3 border rounded">
+            <h4>Over 1</h4>
+            <div class="ball-section" id="over0"></div>
+        </div>
+        <div class="over-container p-3 my-3 border rounded">
+            <h4>Over 2</h4>
+            <div class="ball-section" id="over1"></div>
+        </div>
+        <div class="over-container p-3 my-3 border rounded">
+            <h4>Over 3</h4>
+            <div class="ball-section" id="over2"></div>
+        </div>
+        <div class="over-container p-3 my-3 border rounded">
+            <h4>Over 4</h4>
+            <div class="ball-section" id="over3"></div>
+        </div>
+        <div class="over-container p-3 my-3 border rounded">
+            <h4>Over 5</h4>
+            <div class="ball-section" id="over4"></div>
+        </div>
+        <hr />
+        <div class="second-innings-button">
+            <form asp-action="StartChallenge" method="post">
+                <input name="id" value="@opponentTeam.Id" hidden />
+                <input name="tid" value="@Model.Id" hidden />
+                <input name="target" id="target" value="" hidden />
+                <button type="submit" id="start-second-innings" class=" btn btn-outline-primary px-4 mt-4" hidden><i class="bi bi-play"></i> Start Second Innings</button>
+            </form>
+            <h3 id="final-result" hidden>Team <span id="WinningTeam"></span> won by <span id="WinningCause"></span>.</h3>
+            <a asp-controller="Teams" asp-action="Match" id="go-back" class=" btn btn-outline-primary px-4 mt-4" hidden><i class="bi bi-exit"></i> Go Back</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    p {
+        margin: 0.5rem;
+    }
+
+    .overs-section {
+        margin-top: 20px;
+    }
+
+    .over-container {
+        background-color: #f8f9fa;
+    }
+
+    .ball-section {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .ball-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 60px;
+        min-height: 60px;
+        background-color: #fff;
+    }
+
+    .second-innings-button {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .ball-section .ball-container {
+        display: flex;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        const teamId = @Model.Id;
+        const opponenetTeamId = @opponentTeam.Id;
+        const target = @ViewBag.Target;
+    </script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/score.js"></script>
+}

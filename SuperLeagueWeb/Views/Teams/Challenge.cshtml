@@ -1,0 +1,52 @@
+﻿@model Team
+@{
+    ViewData["Title"] = "Challenge a Match";
+}
+<div class="container my-5">
+    <div class="p-4 align-items-center pe-lg-0 pt-lg-5 pb-lg-5 rounded-3 border shadow-lg">
+        <h3 class="text-center">Super League Web</h3>
+        <div class="row text-center">
+            <div class="col-lg-5 text-end" style="margin-top:-40px;">
+                <img src="@Model.FlagUrl" width="200" />
+                <h3 style="margin-top:-30px;">Team @Model.Name</h3>
+            </div>
+            <div class="col-2 justify-content-center border-start border-end d-flex align-items-center">
+                <h3>vs</h3>
+            </div>
+            <div class="col-lg-5 text-start" style="margin-top:75px;">
+                <img src="" width="200" />
+                <h3 style="margin-top:-30px;">Choose<br /> an opponenet</h3>
+            </div>
+        </div>
+        <hr />
+        <form asp-action="StartChallenge" method="post">
+            <input name="id" value="@Model.Id" hidden />
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Team Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var team in ViewBag.AllOpponentTeams)
+                    {
+                        <tr>
+                            <td class="text-center align-middle">
+                                <img src="@team.FlagUrl" style="width:50px;" />
+                            </td>
+                            <td class="align-middle">
+                                <a>@team.Name</a>
+                            </td>
+                            <td class="align-middle">
+                                <button type="submit" id="tid" name="tid" value="@team.Id" class="btn btn-warning"><i class="bi bi-slash-circle"></i> Accept Challenge</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input name="target" value="998" hidden />
+        </form>
+    </div>
+</div>
